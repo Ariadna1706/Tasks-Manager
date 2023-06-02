@@ -3,6 +3,7 @@ import React from "react";
 class TasksManager extends React.Component {
   apiUrl = "http://localhost:3005/data";
   state = {
+    disabled: true,
     task: "",
     time: 0,
     isRunning: false,
@@ -53,8 +54,6 @@ class TasksManager extends React.Component {
   render() {
     const { tasks } = this.state;
 
-   
-
     return (
       <section>
         <h1 onClick={this.onClick}>TasksManager</h1>
@@ -91,13 +90,13 @@ class TasksManager extends React.Component {
             <button
               onClick={() => {
                 task.isDone === null || task.isRunning === true
-                  ? this.endTask(task.id) 
+                  ? this.endTask(task.id)
                   : console.log("działa");
               }}
             >
               zakończone
             </button>
-            <button  disabled="true">usuń</button>
+            <button disabled={true}>usuń</button>
           </footer>
         </section>
       );
@@ -106,6 +105,8 @@ class TasksManager extends React.Component {
 
   endTask = (id) => {
     this.stopTimer(id);
+
+
     this.setState((state) => {
       const newTasks = state.tasks.map((task) => {
         if (task.id === id) {
@@ -127,6 +128,14 @@ class TasksManager extends React.Component {
         }),
       };
     });
+
+    console.log(this.isDisabled)
+
+    if(this.isDone === true){
+      this.setState({
+        disabled: false
+      })
+    }
     this.updateData();
   };
 
