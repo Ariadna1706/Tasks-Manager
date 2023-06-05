@@ -3,7 +3,7 @@ import React from "react";
 class TasksManager extends React.Component {
   apiUrl = "http://localhost:3005/data";
   state = {
-    disabled: true,
+    id: "",
     task: "",
     time: 0,
     isRunning: false,
@@ -42,13 +42,21 @@ class TasksManager extends React.Component {
       headers: { "Content-Type": "application/json" },
     };
     fetch(this.apiUrl, options)
-      .then(() => {
-        this.setState({ tasks: [...this.state.tasks, data] });
+      .then((resp) => {
+        if (resp.ok) {
+          return resp.json();
+        }
+        return Promise.reject(resp);
+      })
+      .then((resp) => {
+        this.setState({ tasks: [...this.state.tasks, resp] });
       })
       .catch((err) => console.error("Error" + err));
+
     this.setState({
       task: "",
     });
+    this.updateData();
   };
 
   render() {
@@ -71,41 +79,74 @@ class TasksManager extends React.Component {
   }
 
   renderTasks(tasks) {
-    return tasks.map((task) => {
-      return (
-        <section>
-          <header>
-            {task.name}, time: {task.time}
-          </header>
-          <footer>
-            <button
-              onClick={() => {
-                task.isRunning === false
-                  ? this.startTimer(task.id)
-                  : this.stopTimer(task.id);
-              }}
-            >
-              start/stop
-            </button>
-            <button
-              onClick={() => {
-                task.isDone === null || task.isRunning === true
-                  ? this.endTask(task.id)
-                  : console.log("działa");
-              }}
-            >
-              zakończone
-            </button>
-            <button disabled={true}>usuń</button>
-          </footer>
-        </section>
-      );
-    });
+    console.log(tasks);
+    return [...tasks]
+      .sort((a, b) => {
+        if (a.isDone < b.isDone) {
+          return -1;
+        }
+      })
+      .map((task) => {
+        console.log(task);
+        return (
+          <section>
+            <header>
+              {task.name}, time: {task.time}
+            </header>
+            <footer>
+              <button
+                onClick={() => {
+                  task.isRunning === false
+                    ? this.startTimer(task.id)
+                    : this.stopTimer(task.id);
+                }}
+              >
+                start/stop
+              </button>
+              <button
+                onClick={() => {
+                  if (task.isDone === null || task.isRunning === true) {
+                    this.endTask(task.id);
+                  }
+                }}
+              >
+                zakończone
+              </button>
+              <button
+                disabled={task.isDone === null ? true : false}
+                onClick={() => this.removeTask(task.id)}
+              >
+                usuń
+              </button>
+            </footer>
+          </section>
+        );
+      });
   }
+
+  removeTask = (id) => {
+    this.setState((state) => {
+      const newTasks = state.tasks.map((task) => {
+        if (task.id === id) {
+          return {
+            ...task,
+            isRemoved: true,
+          };
+        }
+        return task;
+      });
+
+      return {
+        tasks: newTasks.filter(function (task) {
+          return task.isRemoved !== true;
+        }),
+      };
+    });
+    this.updateData()
+  };
 
   endTask = (id) => {
     this.stopTimer(id);
-
 
     this.setState((state) => {
       const newTasks = state.tasks.map((task) => {
@@ -121,22 +162,9 @@ class TasksManager extends React.Component {
       });
 
       return {
-        tasks: newTasks.sort(function (a, b) {
-          if (a.isDone < b.isDone) {
-            return 1;
-          }
-        }),
+        tasks: newTasks,
       };
     });
-
-    console.log(this.isDisabled)
-
-    if(this.isDone === true){
-      this.setState({
-        disabled: false
-      })
-    }
-    this.updateData();
   };
 
   startTimer = (id) => {
@@ -171,6 +199,7 @@ class TasksManager extends React.Component {
         tasks: newTasks,
       };
     });
+
     this.updateData();
   };
 
@@ -184,6 +213,7 @@ class TasksManager extends React.Component {
         isRunning: task.isRunning,
         isDone: task.isDone,
         isRemoved: task.isRemoved,
+        id: task.id,
       };
 
       console.log(data);
@@ -209,12 +239,16 @@ class TasksManager extends React.Component {
         return Promise.reject(resp);
       })
       .then((object) => {
-        this.setState({ tasks: object });
+        this.setState({
+          tasks: object.filter(function (task) {
+            return task.isRemoved !== true;
+          }),
+        });
       })
       .catch((err) => console.error(err));
   }
 
-  componentDidUpdate() {}
+
   componentWillUnmount() {
     clearInterval(this.intervalId);
   }
