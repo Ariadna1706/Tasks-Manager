@@ -1,9 +1,9 @@
 import React from "react";
+import dataProvider from "../dataProvider";
 
+const apiDataProvider = new dataProvider();
 class TasksManager extends React.Component {
-  apiUrl = "http://localhost:3005/data";
   state = {
-    id: "",
     task: "",
     time: 0,
     isRunning: false,
@@ -11,8 +11,6 @@ class TasksManager extends React.Component {
     isRemoved: false,
     tasks: [],
   };
-
-  updateDatabase = () => {};
 
   onClick = () => {
     const { tasks } = this.state;
@@ -36,18 +34,10 @@ class TasksManager extends React.Component {
       isDone: isDone,
       isRemoved: isRemoved,
     };
-    const options = {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: { "Content-Type": "application/json" },
-    };
-    fetch(this.apiUrl, options)
-      .then((resp) => {
-        if (resp.ok) {
-          return resp.json();
-        }
-        return Promise.reject(resp);
-      })
+
+    apiDataProvider
+      .submitTask(data)
+
       .then((resp) => {
         this.setState({ tasks: [...this.state.tasks, resp] });
       })
@@ -56,7 +46,6 @@ class TasksManager extends React.Component {
     this.setState({
       task: "",
     });
-    this.updateData();
   };
 
   render() {
@@ -83,7 +72,7 @@ class TasksManager extends React.Component {
     return [...tasks]
       .sort((a, b) => {
         if (a.isDone < b.isDone) {
-          return -1;
+          return null;
         }
       })
       .map((task) => {
@@ -128,10 +117,12 @@ class TasksManager extends React.Component {
     this.setState((state) => {
       const newTasks = state.tasks.map((task) => {
         if (task.id === id) {
-          return {
+          const updateData = {
             ...task,
             isRemoved: true,
           };
+          this.updateData(updateData);
+          return updateData;
         }
         return task;
       });
@@ -142,7 +133,6 @@ class TasksManager extends React.Component {
         }),
       };
     });
-    this.updateData()
   };
 
   endTask = (id) => {
@@ -172,7 +162,13 @@ class TasksManager extends React.Component {
       this.setState((state) => {
         const newTasks = state.tasks.map((task) => {
           if (task.id === id) {
-            return { ...task, time: task.time + 1, isRunning: true };
+            const updateData = {
+              ...task,
+              time: task.time + 1,
+              isRunning: true,
+            };
+            this.updateData(updateData);
+            return updateData;
           }
           return task;
         });
@@ -182,7 +178,6 @@ class TasksManager extends React.Component {
         };
       });
     }, 1000);
-    this.updateData();
   };
 
   stopTimer = (id) => {
@@ -190,7 +185,9 @@ class TasksManager extends React.Component {
       clearInterval(this.IntervalId);
       const newTasks = state.tasks.map((task) => {
         if (task.id === id) {
-          return { ...task, isRunning: false };
+          const updateData = { ...task, isRunning: false };
+          this.updateData(updateData);
+          return updateData;
         }
         return task;
       });
@@ -199,45 +196,19 @@ class TasksManager extends React.Component {
         tasks: newTasks,
       };
     });
-
-    this.updateData();
   };
 
   updateData = () => {
     const { tasks } = this.state;
 
     tasks.map((task) => {
-      const data = {
-        name: task.name,
-        time: task.time,
-        isRunning: task.isRunning,
-        isDone: task.isDone,
-        isRemoved: task.isRemoved,
-        id: task.id,
-      };
-
-      console.log(data);
-
-      const options = {
-        method: "PUT",
-        body: JSON.stringify(data),
-        headers: { "Content-Type": "application/json" },
-      };
-
-      fetch(`${this.apiUrl}/${task.id}`, options).then((resp) =>
-        console.log(resp)
-      );
+      apiDataProvider.addTasks(task).then((resp) => console.log(resp));
     });
   };
 
   componentDidMount() {
-    fetch(this.apiUrl)
-      .then((resp) => {
-        if (resp.ok) {
-          return resp.json();
-        }
-        return Promise.reject(resp);
-      })
+    apiDataProvider
+      .loadData()
       .then((object) => {
         this.setState({
           tasks: object.filter(function (task) {
@@ -247,7 +218,6 @@ class TasksManager extends React.Component {
       })
       .catch((err) => console.error(err));
   }
-
 
   componentWillUnmount() {
     clearInterval(this.intervalId);

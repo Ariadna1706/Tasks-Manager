@@ -1,8 +1,8 @@
 {
   "data": [
     {
-      "name": "Zadanie 1",
-      "time": 5,
+      "name": "Zadanie 1 ",
+      "time": 3,
       "isRunning": false,
       "isDone": true,
       "isRemoved": false,
@@ -12,7 +12,7 @@
       "name": "Zadanie 2",
       "time": 0,
       "isRunning": false,
-      "isDone": null,
+      "isDone": true,
       "isRemoved": false,
       "id": 2
     },
@@ -20,9 +20,57 @@
       "name": "Zadanie 3",
       "time": 0,
       "isRunning": false,
-      "isDone": null,
+      "isDone": true,
       "isRemoved": false,
       "id": 3
+    },
+    {
+      "name": "Zadanie 1 ",
+      "time": 5,
+      "isRunning": false,
+      "isDone": true,
+      "isRemoved": false,
+      "id": 4
+    },
+    {
+      "name": "Zadanie 1 ",
+      "time": 0,
+      "isRunning": false,
+      "isDone": true,
+      "isRemoved": false,
+      "id": 5
+    },
+    {
+      "name": "Zadanie 1 ",
+      "time": 0,
+      "isRunning": false,
+      "isDone": true,
+      "isRemoved": false,
+      "id": 6
+    },
+    {
+      "name": "Zadanie 1 ",
+      "time": 9,
+      "isRunning": false,
+      "isDone": true,
+      "isRemoved": false,
+      "id": 7
+    },
+    {
+      "name": "Zadanie 1 ",
+      "time": 0,
+      "isRunning": false,
+      "isDone": true,
+      "isRemoved": false,
+      "id": 8
+    },
+    {
+      "name": "Zadanie 1 ",
+      "time": 0,
+      "isRunning": false,
+      "isDone": true,
+      "isRemoved": false,
+      "id": 9
     }
   ]
 }
