@@ -1,3 +1,48 @@
 body {
-    background: #dcdcdc;
+  background-color: rgba(239, 89, 252, 1);
+  background-image: linear-gradient(
+    90deg,
+    rgba(239, 89, 252, 1) 0%,
+    rgba(214, 34, 81, 1) 94%
+  );
+  font-size: 17px;
+}
+
+.container {
+  background-color: white;
+  margin: 100px auto;
+  max-width: 400px;
+  border: 1px solid rgba(214, 34, 81, 1);
+  -webkit-box-shadow: 8px 8px 24px 0px rgba(218, 148, 192, 0.45);
+  -moz-box-shadow: 8px 8px 24px 0px rgba(218, 148, 192, 0.45);
+  box-shadow: 8px 8px 24px 0px rgba(218, 148, 192, 0.45);
+  border-radius: 10px;
+}
+
+.sumbit_btn,
+button {
+  font-size: 20px;
+  margin-left: 5px;
+  background-color: #ff80ff;
+  color: white;
+  border-radius: 5px;
+  border: none;
+}
+
+button {
+  background-color: #ff80ff;
+  font-size: 15px;
+  margin: 5px 5px 5px 0;
+  padding: 5px 20px;
+}
+
+button:disabled {
+  background-color: #ffccf2;
+}
+
+h1,
+h3,
+form,
+.task_container {
+  margin: 1rem;
 }

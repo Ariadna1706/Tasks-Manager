@@ -12,6 +12,8 @@ class TasksManager extends React.Component {
     tasks: [],
   };
 
+  date = new Date();
+
   onClick = () => {
     const { tasks } = this.state;
     console.log(tasks);
@@ -52,15 +54,17 @@ class TasksManager extends React.Component {
     const { tasks } = this.state;
 
     return (
-      <section>
-        <h1 onClick={this.onClick}>TasksManager</h1>
+      <section class="container">
+        <h1 onClick={this.onClick}>Today Tasks:</h1>
+        <h3>{this.date.toLocaleDateString("en")}</h3>
         <form onSubmit={this.submitHandler}>
           <input
+            class="input_field"
             onChange={this.changeHandler}
             name="task"
             value={this.state.task}
           ></input>
-          <input type="submit"></input>
+          <input class="sumbit_btn" value="+" type="submit"></input>
         </form>
         <>{this.renderTasks(tasks)}</>
       </section>
@@ -78,7 +82,7 @@ class TasksManager extends React.Component {
       .map((task) => {
         console.log(task);
         return (
-          <section>
+          <section class="task_container">
             <header>
               {task.name}, time: {task.time}
             </header>
@@ -99,13 +103,13 @@ class TasksManager extends React.Component {
                   }
                 }}
               >
-                zakończone
+                end
               </button>
               <button
                 disabled={task.isDone === null ? true : false}
                 onClick={() => this.removeTask(task.id)}
               >
-                usuń
+                remove
               </button>
             </footer>
           </section>
