@@ -12,7 +12,6 @@ class TasksManager extends React.Component {
     tasks: [],
   };
 
-  date = new Date();
 
   onClick = () => {
     const { tasks } = this.state;
@@ -56,7 +55,7 @@ class TasksManager extends React.Component {
     return (
       <section class="container">
         <h1 onClick={this.onClick}>Today Tasks:</h1>
-        <h3>{this.date.toLocaleDateString("en")}</h3>
+        <h3>{new Date().toLocaleDateString("en")}</h3>
         <form onSubmit={this.submitHandler}>
           <input
             class="input_field"
@@ -78,8 +77,12 @@ class TasksManager extends React.Component {
         if (a.isDone < b.isDone) {
           return null;
         }
+       
       })
       .map((task) => {
+        if(task.isRemoved){
+          return null
+        }
         console.log(task);
         return (
           <section class="task_container">
@@ -132,9 +135,7 @@ class TasksManager extends React.Component {
       });
 
       return {
-        tasks: newTasks.filter(function (task) {
-          return task.isRemoved !== true;
-        }),
+        tasks: newTasks
       };
     });
   };
@@ -202,12 +203,11 @@ class TasksManager extends React.Component {
     });
   };
 
-  updateData = () => {
-    const { tasks } = this.state;
-
-    tasks.map((task) => {
-      apiDataProvider.addTasks(task).then((resp) => console.log(resp));
-    });
+  updateData = (t) => {
+    //const { tasks } = this.state;
+   // tasks.map((task) => {
+      apiDataProvider.addTasks(t).then((resp) => console.log(resp));
+  //  });
   };
 
   componentDidMount() {

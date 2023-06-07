@@ -5,15 +5,15 @@
       "time": 2,
       "isRunning": false,
       "isDone": true,
-      "isRemoved": false,
+      "isRemoved": true,
       "id": 1
     },
     {
       "name": "Task 2",
-      "time": 0,
+      "time": 4,
       "isRunning": false,
       "isDone": true,
-      "isRemoved": false,
+      "isRemoved": true,
       "id": 2
     },
     {
@@ -21,8 +21,32 @@
       "time": 0,
       "isRunning": false,
       "isDone": true,
-      "isRemoved": false,
+      "isRemoved": true,
       "id": 3
+    },
+    {
+      "name": "Zadanie 3",
+      "time": 0,
+      "isRunning": false,
+      "isDone": true,
+      "isRemoved": true,
+      "id": 4
+    },
+    {
+      "name": "Zadanie 3",
+      "time": 0,
+      "isRunning": false,
+      "isDone": true,
+      "isRemoved": true,
+      "id": 5
+    },
+    {
+      "name": "",
+      "time": 0,
+      "isRunning": false,
+      "isDone": null,
+      "isRemoved": false,
+      "id": 6
     }
   ]
 }
