@@ -3,6 +3,8 @@
 
 Tasks Manager created using React 
 
+Main goal of this project was to practice components cration and state changes in React. 
+
 ![Projekt bez nazwy](https://github.com/Ariadna1706/Tasks-Manager/assets/113725123/395eda12-5487-4126-b2d5-6982a179368c)
 
 &nbsp;
