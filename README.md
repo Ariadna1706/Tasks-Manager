@@ -17,7 +17,7 @@ Main goal of this project was to practice components cration and state changes i
 
 ## 💿 Installation
 
-The project uses [node](https://nodejs.org/en/), [npm](https://www.npmjs.com/). Having them installed, type into the terminal: `npm i` and `npm install json-server -g`.
+The project uses [node](https://nodejs.org/en/), [npm](https://www.npmjs.com/) and [JSONServer](https://www.npmjs.com/package/json-server). Having them installed, type into the terminal: `npm i` and `npm install json-server -g`.
 
 
 &nbsp;
